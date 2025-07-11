@@ -10,6 +10,8 @@ import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminOrders from "./pages/admin/AdminOrders";
+import AdminMenuCategories from "./pages/admin/AdminMenuCategories";
+import AdminProducts from "./pages/admin/AdminProducts";
 import AdminLayout from "./components/admin/AdminLayout";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
@@ -32,7 +34,8 @@ const App = () => (
             }>
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="orders" element={<AdminOrders />} />
-              <Route path="products" element={<div className="p-6 text-center text-gray-500">Products page coming soon...</div>} />
+              <Route path="menu-categories" element={<AdminMenuCategories />} />
+              <Route path="products" element={<AdminProducts />} />
               <Route path="customers" element={<div className="p-6 text-center text-gray-500">Customers page coming soon...</div>} />
               <Route path="analytics" element={<div className="p-6 text-center text-gray-500">Analytics page coming soon...</div>} />
               <Route path="settings" element={<div className="p-6 text-center text-gray-500">Settings page coming soon...</div>} />
