@@ -129,7 +129,7 @@ const Menu: React.FC = () => {
                         <div className="p-6">
                           <div className="flex justify-between items-start mb-2">
                             <h3 className="text-xl font-semibold text-gray-900">{product.name}</h3>
-                            <span className="text-xl font-bold text-orange-500">${product.price.toFixed(2)}</span>
+                            <span className="text-xl font-bold text-orange-500">₹{product.price.toFixed(2)}</span>
                           </div>
                           {product.description && (
                             <p className="text-gray-600 mb-4">{product.description}</p>

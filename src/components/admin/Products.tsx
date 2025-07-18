@@ -284,9 +284,9 @@ const Products: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {getCategoryName(product.category_id)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${product.price.toFixed(2)}
-                  </td>
+                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                     ₹{product.price.toFixed(2)}
+                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 text-xs rounded-full ${
                       product.is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
