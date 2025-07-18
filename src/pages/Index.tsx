@@ -42,9 +42,9 @@ const Index = () => {
             <button className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors">
               Order Now
             </button>
-            <button className="px-8 py-3 border border-orange-500 text-orange-500 hover:bg-orange-50 rounded-lg font-medium transition-colors">
+            <Link to="/menu" className="px-8 py-3 border border-orange-500 text-orange-500 hover:bg-orange-50 rounded-lg font-medium transition-colors">
               View Menu
-            </button>
+            </Link>
           </div>
         </div>
 

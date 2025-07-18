@@ -30,9 +30,9 @@ const Products: React.FC = () => {
     category_id: '',
     name: '',
     description: '',
-    price: 0,
+    price: '',
     image_url: '',
-    display_order: 0,
+    display_order: '',
     is_available: true
   });
   const { toast } = useToast();
@@ -93,9 +93,9 @@ const Products: React.FC = () => {
         category_id: '',
         name: '',
         description: '',
-        price: 0,
+        price: '',
         image_url: '',
-        display_order: 0,
+        display_order: '',
         is_available: true
       });
       fetchProducts();
@@ -192,14 +192,14 @@ const Products: React.FC = () => {
               step="0.01"
               placeholder="Price"
               value={formData.price}
-              onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
+              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
               className="border rounded-lg px-3 py-2"
             />
             <input
               type="number"
               placeholder="Display Order"
               value={formData.display_order}
-              onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) })}
+              onChange={(e) => setFormData({ ...formData, display_order: e.target.value })}
               className="border rounded-lg px-3 py-2"
             />
             <input
@@ -304,9 +304,127 @@ const Products: React.FC = () => {
                   </div>
                 </td>
               </tr>
+              {editingId === product.id && (
+                <tr>
+                  <td colSpan={5} className="px-6 py-4 bg-gray-50">
+                    <EditProductForm
+                      product={product}
+                      categories={categories}
+                      onSave={(updatedData) => handleUpdate(product.id, updatedData)}
+                      onCancel={() => setEditingId(null)}
+                    />
+                  </td>
+                </tr>
+              )}
             ))}
           </tbody>
         </table>
+      </div>
+    </div>
+  );
+};
+
+const EditProductForm: React.FC<{
+  product: Product;
+  categories: MenuCategory[];
+  onSave: (updatedData: Partial<Product>) => void;
+  onCancel: () => void;
+}> = ({ product, categories, onSave, onCancel }) => {
+  const [editData, setEditData] = useState({
+    category_id: product.category_id,
+    name: product.name,
+    description: product.description || '',
+    price: product.price.toString(),
+    image_url: product.image_url || '',
+    display_order: product.display_order?.toString() || '0',
+    is_available: product.is_available ?? true
+  });
+
+  const handleSave = () => {
+    const updatedData = {
+      ...editData,
+      price: parseFloat(editData.price) || 0,
+      display_order: parseInt(editData.display_order) || 0
+    };
+    onSave(updatedData);
+  };
+
+  return (
+    <div className="space-y-4">
+      <h4 className="font-semibold">Edit Product</h4>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <select
+          value={editData.category_id}
+          onChange={(e) => setEditData({ ...editData, category_id: e.target.value })}
+          className="border rounded-lg px-3 py-2"
+        >
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+        <input
+          type="text"
+          placeholder="Product Name"
+          value={editData.name}
+          onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+          className="border rounded-lg px-3 py-2"
+        />
+        <input
+          type="number"
+          step="0.01"
+          placeholder="Price"
+          value={editData.price}
+          onChange={(e) => setEditData({ ...editData, price: e.target.value })}
+          className="border rounded-lg px-3 py-2"
+        />
+        <input
+          type="number"
+          placeholder="Display Order"
+          value={editData.display_order}
+          onChange={(e) => setEditData({ ...editData, display_order: e.target.value })}
+          className="border rounded-lg px-3 py-2"
+        />
+        <input
+          type="url"
+          placeholder="Image URL"
+          value={editData.image_url}
+          onChange={(e) => setEditData({ ...editData, image_url: e.target.value })}
+          className="border rounded-lg px-3 py-2 md:col-span-2"
+        />
+        <textarea
+          placeholder="Description"
+          value={editData.description}
+          onChange={(e) => setEditData({ ...editData, description: e.target.value })}
+          className="border rounded-lg px-3 py-2 md:col-span-2"
+          rows={3}
+        />
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={editData.is_available}
+            onChange={(e) => setEditData({ ...editData, is_available: e.target.checked })}
+            className="rounded"
+          />
+          <label>Available</label>
+        </div>
+      </div>
+      <div className="flex gap-2">
+        <button
+          onClick={handleSave}
+          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+        >
+          <Save size={16} />
+          Save
+        </button>
+        <button
+          onClick={onCancel}
+          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+        >
+          <X size={16} />
+          Cancel
+        </button>
       </div>
     </div>
   );
