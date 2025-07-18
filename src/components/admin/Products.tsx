@@ -81,9 +81,15 @@ const Products: React.FC = () => {
 
   const handleAdd = async () => {
     try {
+      const insertData = {
+        ...formData,
+        price: parseFloat(formData.price) || 0,
+        display_order: parseInt(formData.display_order) || 0
+      };
+      
       const { error } = await supabase
         .from('products')
-        .insert([formData]);
+        .insert([insertData]);
 
       if (error) throw error;
       
@@ -258,64 +264,66 @@ const Products: React.FC = () => {
           </thead>
           <tbody className="divide-y divide-gray-200">
             {products.map((product) => (
-              <tr key={product.id}>
-                <td className="px-6 py-4">
-                  <div className="flex items-center">
-                    {product.image_url && (
-                      <img
-                        src={product.image_url}
-                        alt={product.name}
-                        className="w-10 h-10 rounded-full mr-3 object-cover"
-                      />
-                    )}
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                      <div className="text-sm text-gray-500">{product.description}</div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {getCategoryName(product.category_id)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  ${product.price.toFixed(2)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    product.is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}>
-                    {product.is_available ? 'Available' : 'Unavailable'}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => setEditingId(editingId === product.id ? null : product.id)}
-                      className="text-blue-600 hover:text-blue-900"
-                    >
-                      <Edit size={16} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(product.id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              {editingId === product.id && (
+              <React.Fragment key={product.id}>
                 <tr>
-                  <td colSpan={5} className="px-6 py-4 bg-gray-50">
-                    <EditProductForm
-                      product={product}
-                      categories={categories}
-                      onSave={(updatedData) => handleUpdate(product.id, updatedData)}
-                      onCancel={() => setEditingId(null)}
-                    />
+                  <td className="px-6 py-4">
+                    <div className="flex items-center">
+                      {product.image_url && (
+                        <img
+                          src={product.image_url}
+                          alt={product.name}
+                          className="w-10 h-10 rounded-full mr-3 object-cover"
+                        />
+                      )}
+                      <div>
+                        <div className="text-sm font-medium text-gray-900">{product.name}</div>
+                        <div className="text-sm text-gray-500">{product.description}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {getCategoryName(product.category_id)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    ${product.price.toFixed(2)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      product.is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
+                      {product.is_available ? 'Available' : 'Unavailable'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => setEditingId(editingId === product.id ? null : product.id)}
+                        className="text-blue-600 hover:text-blue-900"
+                      >
+                        <Edit size={16} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(product.id)}
+                        className="text-red-600 hover:text-red-900"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
-              )}
+                {editingId === product.id && (
+                  <tr>
+                    <td colSpan={5} className="px-6 py-4 bg-gray-50">
+                      <EditProductForm
+                        product={product}
+                        categories={categories}
+                        onSave={(updatedData) => handleUpdate(product.id, updatedData)}
+                        onCancel={() => setEditingId(null)}
+                      />
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
